@@ -74,6 +74,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "Bruno Eduardo Avi — Assistência Técnica em Informática" },
       { name: "description", content: "Conserto de notebooks, desktops e redes. Atendimento via WhatsApp." },
+      { property: "og:title", content: "Bruno Eduardo Avi — Assistência Técnica em Informática" },
+      { name: "twitter:title", content: "Bruno Eduardo Avi — Assistência Técnica em Informática" },
+      { property: "og:description", content: "Conserto de notebooks, desktops e redes. Atendimento via WhatsApp." },
+      { name: "twitter:description", content: "Conserto de notebooks, desktops e redes. Atendimento via WhatsApp." },
+      { name: "twitter:card", content: "summary" },
+      { property: "og:type", content: "website" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
