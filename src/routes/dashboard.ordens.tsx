@@ -258,9 +258,97 @@ function OrdensPage() {
       </div>
 
       {showForm && <OrderForm order={editing} onClose={() => setShowForm(false)} />}
+      {triage && <TriageModal order={triage} onClose={() => setTriage(null)} />}
     </div>
   );
 }
+
+function TriageModal({ order, onClose }: { order: Order; onClose: () => void }) {
+  const qc = useQueryClient();
+  const [diagnosis, setDiagnosis] = useState(order.diagnosis ?? "");
+  const [priority, setPriority] = useState<Priority>(order.priority);
+  const [status, setStatus] = useState<Status>(order.status);
+
+  const save = useMutation({
+    mutationFn: async () => {
+      const { error } = await supabase
+        .from("service_orders")
+        .update({ diagnosis, priority, status })
+        .eq("id", order.id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["orders"] });
+      qc.invalidateQueries({ queryKey: ["dashboard-stats"] });
+      toast.success("Triagem registrada");
+      onClose();
+    },
+    onError: (e) => toast.error(e instanceof Error ? e.message : "Erro"),
+  });
+
+  return (
+    <div className="fixed inset-0 z-50 grid place-items-center bg-black/50 p-4">
+      <div className="w-full max-w-lg rounded-2xl bg-card p-6 shadow-xl">
+        <div className="mb-4 flex items-center justify-between">
+          <div>
+            <h2 className="font-display text-xl font-bold">Triagem — OS #{order.order_number}</h2>
+            <p className="text-sm text-muted-foreground">{order.equipment} · {order.customers?.name}</p>
+          </div>
+          <button onClick={onClose}><X className="h-5 w-5" /></button>
+        </div>
+        <div className="mb-4 rounded-lg bg-secondary/50 p-3 text-sm">
+          <div className="font-medium">Problema relatado:</div>
+          <div className="text-muted-foreground">{order.reported_issue}</div>
+        </div>
+        <div className="space-y-4">
+          <div>
+            <label className="text-sm font-medium">Diagnóstico inicial</label>
+            <textarea
+              rows={4}
+              value={diagnosis}
+              onChange={(e) => setDiagnosis(e.target.value)}
+              placeholder="Anote a análise técnica preliminar..."
+              className="mt-1.5 w-full rounded-lg border border-input bg-background px-3 py-2 outline-none ring-ring focus:ring-2"
+            />
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="text-sm font-medium">Prioridade</label>
+              <select
+                value={priority}
+                onChange={(e) => setPriority(e.target.value as Priority)}
+                className="mt-1.5 h-10 w-full rounded-lg border border-input bg-background px-2"
+              >
+                {Object.entries(PRIORITY_LABELS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
+              </select>
+            </div>
+            <div>
+              <label className="text-sm font-medium">Status</label>
+              <select
+                value={status}
+                onChange={(e) => setStatus(e.target.value as Status)}
+                className="mt-1.5 h-10 w-full rounded-lg border border-input bg-background px-2"
+              >
+                {Object.entries(STATUS_LABELS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
+              </select>
+            </div>
+          </div>
+        </div>
+        <div className="mt-6 flex justify-end gap-2">
+          <button onClick={onClose} className="rounded-lg border border-border px-4 py-2 text-sm font-medium">Cancelar</button>
+          <button
+            onClick={() => save.mutate()}
+            disabled={save.isPending}
+            className="rounded-lg bg-[image:var(--gradient-hero)] px-4 py-2 text-sm font-semibold text-primary-foreground disabled:opacity-50"
+          >
+            Salvar triagem
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 
 function OrderForm({ order, onClose }: { order: Order | null; onClose: () => void }) {
   const qc = useQueryClient();
