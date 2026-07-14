@@ -17,6 +17,7 @@ const nav: Array<{ to: string; label: string; icon: typeof LayoutDashboard; exac
   { to: "/dashboard", label: "Visão Geral", icon: LayoutDashboard, exact: true },
   { to: "/dashboard/clientes", label: "Clientes", icon: Users },
   { to: "/dashboard/ordens", label: "Ordens de Serviço", icon: ClipboardList },
+  { to: "/dashboard/documentos", label: "Documentos", icon: FileText },
 ];
 
 function DashboardLayout() {
