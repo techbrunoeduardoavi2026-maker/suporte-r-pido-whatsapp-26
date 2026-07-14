@@ -2,7 +2,7 @@ import { createFileRoute, Outlet, Link, useNavigate, useRouterState, redirect } 
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { BUSINESS } from "@/lib/business";
-import { LayoutDashboard, Users, ClipboardList, FileText, LogOut, Cpu, Menu, X } from "lucide-react";
+import { LayoutDashboard, Users, ClipboardList, FileText, BarChart3, LogOut, Cpu, Menu, X } from "lucide-react";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/dashboard")({
@@ -18,6 +18,7 @@ const nav: Array<{ to: string; label: string; icon: typeof LayoutDashboard; exac
   { to: "/dashboard/clientes", label: "Clientes", icon: Users },
   { to: "/dashboard/ordens", label: "Ordens de Serviço", icon: ClipboardList },
   { to: "/dashboard/documentos", label: "Documentos", icon: FileText },
+  { to: "/dashboard/produtividade", label: "Produtividade", icon: BarChart3 },
 ];
 
 function DashboardLayout() {
