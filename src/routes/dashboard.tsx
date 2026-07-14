@@ -2,7 +2,7 @@ import { createFileRoute, Outlet, Link, useNavigate, useRouterState, redirect } 
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { BUSINESS } from "@/lib/business";
-import { LayoutDashboard, Users, ClipboardList, LogOut, Cpu, Menu, X } from "lucide-react";
+import { LayoutDashboard, Users, ClipboardList, FileText, LogOut, Cpu, Menu, X } from "lucide-react";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/dashboard")({
