@@ -102,6 +102,40 @@ function OrdensPage() {
     onError: (e) => toast.error(e instanceof Error ? e.message : "Erro"),
   });
 
+  const assume = useMutation({
+    mutationFn: async (o: Order) => {
+      if (!currentUserId) throw new Error("Sessão expirada");
+      const { error } = await supabase
+        .from("service_orders")
+        .update({ technician_id: currentUserId, status: "em_andamento" })
+        .eq("id", o.id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["orders"] });
+      qc.invalidateQueries({ queryKey: ["dashboard-stats"] });
+      toast.success("Chamado assumido");
+    },
+    onError: (e) => toast.error(e instanceof Error ? e.message : "Erro"),
+  });
+
+  const close = useMutation({
+    mutationFn: async (o: Order) => {
+      const { error } = await supabase
+        .from("service_orders")
+        .update({ status: "entregue", delivery_date: new Date().toISOString() })
+        .eq("id", o.id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["orders"] });
+      qc.invalidateQueries({ queryKey: ["dashboard-stats"] });
+      toast.success("Chamado encerrado");
+    },
+    onError: (e) => toast.error(e instanceof Error ? e.message : "Erro"),
+  });
+
+
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
@@ -176,10 +210,38 @@ function OrdensPage() {
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex justify-end gap-1">
-                      <button onClick={() => { setEditing(o); setShowForm(true); }} className="grid h-8 w-8 place-items-center rounded-md hover:bg-secondary">
+                      {o.status === "aberta" && (
+                        <button
+                          title="Triagem"
+                          onClick={() => setTriage(o)}
+                          className="grid h-8 w-8 place-items-center rounded-md text-blue-600 hover:bg-blue-500/10"
+                        >
+                          <Stethoscope className="h-4 w-4" />
+                        </button>
+                      )}
+                      {!o.technician_id && o.status !== "entregue" && o.status !== "cancelada" && (
+                        <button
+                          title="Assumir chamado"
+                          onClick={() => assume.mutate(o)}
+                          className="grid h-8 w-8 place-items-center rounded-md text-orange-600 hover:bg-orange-500/10"
+                        >
+                          <UserCheck className="h-4 w-4" />
+                        </button>
+                      )}
+                      {o.status !== "entregue" && o.status !== "cancelada" && (
+                        <button
+                          title="Encerrar chamado"
+                          onClick={() => { if (confirm(`Encerrar OS #${o.order_number}?`)) close.mutate(o); }}
+                          className="grid h-8 w-8 place-items-center rounded-md text-green-600 hover:bg-green-500/10"
+                        >
+                          <CheckCircle2 className="h-4 w-4" />
+                        </button>
+                      )}
+                      <button title="Editar" onClick={() => { setEditing(o); setShowForm(true); }} className="grid h-8 w-8 place-items-center rounded-md hover:bg-secondary">
                         <Pencil className="h-4 w-4" />
                       </button>
                       <button
+                        title="Remover"
                         onClick={() => { if (confirm(`Remover OS #${o.order_number}?`)) del.mutate(o.id); }}
                         className="grid h-8 w-8 place-items-center rounded-md text-destructive hover:bg-destructive/10"
                       >
@@ -187,6 +249,7 @@ function OrdensPage() {
                       </button>
                     </div>
                   </td>
+
                 </tr>
               ))}
             </tbody>
