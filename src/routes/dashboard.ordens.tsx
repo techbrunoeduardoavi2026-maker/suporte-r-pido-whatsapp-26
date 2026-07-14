@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Plus, Search, Pencil, Trash2, X, ClipboardList } from "lucide-react";
+import { Plus, Search, Pencil, Trash2, X, ClipboardList, Stethoscope, UserCheck, CheckCircle2 } from "lucide-react";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/dashboard/ordens")({
@@ -28,8 +28,10 @@ type Order = {
   total_value: number | null;
   entry_date: string;
   delivery_date: string | null;
+  technician_id: string | null;
   customers?: { name: string } | null;
 };
+
 
 const STATUS_LABELS: Record<Status, string> = {
   aberta: "Aberta", em_andamento: "Em andamento", aguardando_peca: "Aguardando peça",
