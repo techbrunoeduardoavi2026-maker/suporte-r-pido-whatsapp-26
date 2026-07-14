@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
 import { supabase } from "@/integrations/supabase/client";
 import { Plus, Search, Pencil, Trash2, X, ClipboardList, Stethoscope, UserCheck, CheckCircle2 } from "lucide-react";
 import { toast } from "sonner";
@@ -60,10 +61,9 @@ function OrdensPage() {
   const [triage, setTriage] = useState<Order | null>(null);
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
 
-  useState(() => {
+  useEffect(() => {
     supabase.auth.getUser().then(({ data }) => setCurrentUserId(data.user?.id ?? null));
-    return 0;
-  });
+  }, []);
 
   const { data: orders = [], isLoading } = useQuery({
     queryKey: ["orders"],
@@ -77,13 +77,6 @@ function OrdensPage() {
     },
   });
 
-        .from("service_orders")
-        .select("*, customers(name)")
-        .order("created_at", { ascending: false });
-      if (error) throw error;
-      return data as Order[];
-    },
-  });
 
   const filtered = orders.filter((o) => {
     if (statusFilter !== "all" && o.status !== statusFilter) return false;
