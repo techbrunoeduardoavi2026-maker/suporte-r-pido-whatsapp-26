@@ -14,6 +14,7 @@ import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as AbrirChamadoRouteImport } from './routes/abrir-chamado'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard.index'
+import { Route as DashboardProdutividadeRouteImport } from './routes/dashboard.produtividade'
 import { Route as DashboardOrdensRouteImport } from './routes/dashboard.ordens'
 import { Route as DashboardDocumentosRouteImport } from './routes/dashboard.documentos'
 import { Route as DashboardClientesRouteImport } from './routes/dashboard.clientes'
@@ -43,6 +44,11 @@ const DashboardIndexRoute = DashboardIndexRouteImport.update({
   path: '/',
   getParentRoute: () => DashboardRoute,
 } as any)
+const DashboardProdutividadeRoute = DashboardProdutividadeRouteImport.update({
+  id: '/produtividade',
+  path: '/produtividade',
+  getParentRoute: () => DashboardRoute,
+} as any)
 const DashboardOrdensRoute = DashboardOrdensRouteImport.update({
   id: '/ordens',
   path: '/ordens',
@@ -67,6 +73,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/clientes': typeof DashboardClientesRoute
   '/dashboard/documentos': typeof DashboardDocumentosRoute
   '/dashboard/ordens': typeof DashboardOrdensRoute
+  '/dashboard/produtividade': typeof DashboardProdutividadeRoute
   '/dashboard/': typeof DashboardIndexRoute
 }
 export interface FileRoutesByTo {
@@ -76,6 +83,7 @@ export interface FileRoutesByTo {
   '/dashboard/clientes': typeof DashboardClientesRoute
   '/dashboard/documentos': typeof DashboardDocumentosRoute
   '/dashboard/ordens': typeof DashboardOrdensRoute
+  '/dashboard/produtividade': typeof DashboardProdutividadeRoute
   '/dashboard': typeof DashboardIndexRoute
 }
 export interface FileRoutesById {
@@ -87,6 +95,7 @@ export interface FileRoutesById {
   '/dashboard/clientes': typeof DashboardClientesRoute
   '/dashboard/documentos': typeof DashboardDocumentosRoute
   '/dashboard/ordens': typeof DashboardOrdensRoute
+  '/dashboard/produtividade': typeof DashboardProdutividadeRoute
   '/dashboard/': typeof DashboardIndexRoute
 }
 export interface FileRouteTypes {
@@ -99,6 +108,7 @@ export interface FileRouteTypes {
     | '/dashboard/clientes'
     | '/dashboard/documentos'
     | '/dashboard/ordens'
+    | '/dashboard/produtividade'
     | '/dashboard/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -108,6 +118,7 @@ export interface FileRouteTypes {
     | '/dashboard/clientes'
     | '/dashboard/documentos'
     | '/dashboard/ordens'
+    | '/dashboard/produtividade'
     | '/dashboard'
   id:
     | '__root__'
@@ -118,6 +129,7 @@ export interface FileRouteTypes {
     | '/dashboard/clientes'
     | '/dashboard/documentos'
     | '/dashboard/ordens'
+    | '/dashboard/produtividade'
     | '/dashboard/'
   fileRoutesById: FileRoutesById
 }
@@ -165,6 +177,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardIndexRouteImport
       parentRoute: typeof DashboardRoute
     }
+    '/dashboard/produtividade': {
+      id: '/dashboard/produtividade'
+      path: '/produtividade'
+      fullPath: '/dashboard/produtividade'
+      preLoaderRoute: typeof DashboardProdutividadeRouteImport
+      parentRoute: typeof DashboardRoute
+    }
     '/dashboard/ordens': {
       id: '/dashboard/ordens'
       path: '/ordens'
@@ -193,6 +212,7 @@ interface DashboardRouteChildren {
   DashboardClientesRoute: typeof DashboardClientesRoute
   DashboardDocumentosRoute: typeof DashboardDocumentosRoute
   DashboardOrdensRoute: typeof DashboardOrdensRoute
+  DashboardProdutividadeRoute: typeof DashboardProdutividadeRoute
   DashboardIndexRoute: typeof DashboardIndexRoute
 }
 
@@ -200,6 +220,7 @@ const DashboardRouteChildren: DashboardRouteChildren = {
   DashboardClientesRoute: DashboardClientesRoute,
   DashboardDocumentosRoute: DashboardDocumentosRoute,
   DashboardOrdensRoute: DashboardOrdensRoute,
+  DashboardProdutividadeRoute: DashboardProdutividadeRoute,
   DashboardIndexRoute: DashboardIndexRoute,
 }
 
