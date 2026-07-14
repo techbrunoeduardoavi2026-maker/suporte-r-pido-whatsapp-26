@@ -2,7 +2,7 @@ import { createFileRoute, Outlet, Link, useNavigate, useRouterState, redirect } 
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { BUSINESS } from "@/lib/business";
-import { LayoutDashboard, Users, ClipboardList, LogOut, Cpu, Menu, X } from "lucide-react";
+import { LayoutDashboard, Users, ClipboardList, FileText, LogOut, Cpu, Menu, X } from "lucide-react";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/dashboard")({
@@ -17,6 +17,7 @@ const nav: Array<{ to: string; label: string; icon: typeof LayoutDashboard; exac
   { to: "/dashboard", label: "Visão Geral", icon: LayoutDashboard, exact: true },
   { to: "/dashboard/clientes", label: "Clientes", icon: Users },
   { to: "/dashboard/ordens", label: "Ordens de Serviço", icon: ClipboardList },
+  { to: "/dashboard/documentos", label: "Documentos", icon: FileText },
 ];
 
 function DashboardLayout() {
@@ -46,7 +47,7 @@ function DashboardLayout() {
     <div className="flex min-h-screen bg-secondary/30">
       {/* Sidebar */}
       <aside
-        className={`fixed inset-y-0 left-0 z-40 w-64 transform bg-sidebar text-sidebar-foreground transition-transform lg:static lg:translate-x-0 ${open ? "translate-x-0" : "-translate-x-full"}`}
+        className={`fixed inset-y-0 left-0 z-40 w-64 transform bg-sidebar text-sidebar-foreground transition-transform lg:static lg:translate-x-0 print:hidden ${open ? "translate-x-0" : "-translate-x-full"}`}
       >
         <div className="flex h-16 items-center justify-between border-b border-sidebar-border px-5">
           <Link to="/dashboard" className="flex items-center gap-2 font-display font-bold">
@@ -84,7 +85,7 @@ function DashboardLayout() {
       </aside>
 
       <div className="flex-1">
-        <header className="sticky top-0 z-30 flex h-16 items-center gap-3 border-b border-border bg-background/80 px-4 backdrop-blur-xl lg:px-8">
+        <header className="sticky top-0 z-30 flex h-16 items-center gap-3 border-b border-border bg-background/80 px-4 backdrop-blur-xl lg:px-8 print:hidden">
           <button onClick={() => setOpen(true)} className="lg:hidden"><Menu className="h-5 w-5" /></button>
           <div className="font-display font-bold">Painel de Gestão</div>
           <Link to="/" className="ml-auto text-sm text-muted-foreground hover:text-foreground">Ver site →</Link>
