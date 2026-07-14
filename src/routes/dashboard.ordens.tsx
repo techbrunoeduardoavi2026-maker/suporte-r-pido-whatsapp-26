@@ -57,11 +57,26 @@ function OrdensPage() {
   const [statusFilter, setStatusFilter] = useState<Status | "all">("all");
   const [editing, setEditing] = useState<Order | null>(null);
   const [showForm, setShowForm] = useState(false);
+  const [triage, setTriage] = useState<Order | null>(null);
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+
+  useState(() => {
+    supabase.auth.getUser().then(({ data }) => setCurrentUserId(data.user?.id ?? null));
+    return 0;
+  });
 
   const { data: orders = [], isLoading } = useQuery({
     queryKey: ["orders"],
     queryFn: async () => {
       const { data, error } = await supabase
+        .from("service_orders")
+        .select("*, customers(name)")
+        .order("created_at", { ascending: false });
+      if (error) throw error;
+      return data as Order[];
+    },
+  });
+
         .from("service_orders")
         .select("*, customers(name)")
         .order("created_at", { ascending: false });
