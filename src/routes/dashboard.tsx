@@ -85,7 +85,7 @@ function DashboardLayout() {
       </aside>
 
       <div className="flex-1">
-        <header className="sticky top-0 z-30 flex h-16 items-center gap-3 border-b border-border bg-background/80 px-4 backdrop-blur-xl lg:px-8">
+        <header className="sticky top-0 z-30 flex h-16 items-center gap-3 border-b border-border bg-background/80 px-4 backdrop-blur-xl lg:px-8 print:hidden">
           <button onClick={() => setOpen(true)} className="lg:hidden"><Menu className="h-5 w-5" /></button>
           <div className="font-display font-bold">Painel de Gestão</div>
           <Link to="/" className="ml-auto text-sm text-muted-foreground hover:text-foreground">Ver site →</Link>
