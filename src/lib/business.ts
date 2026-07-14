@@ -3,7 +3,7 @@ export const BUSINESS = {
   tagline: "Assistência Técnica em Informática",
   whatsapp: "5547988992553",
   whatsappDisplay: "(47) 98899-2553",
-  email: "contato@brunoavi.com",
+  email: "tech.brunoeduardoavi2026@gmail.com",
   city: "Santa Catarina",
 } as const;
 
