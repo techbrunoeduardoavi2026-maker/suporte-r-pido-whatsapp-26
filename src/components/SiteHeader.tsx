@@ -15,9 +15,10 @@ export function SiteHeader() {
         <nav className="hidden items-center gap-8 text-sm font-medium text-muted-foreground md:flex">
           <a href="/#servicos" className="transition hover:text-foreground">Serviços</a>
           <a href="/#sobre" className="transition hover:text-foreground">Sobre</a>
-          <a href="/#contato" className="transition hover:text-foreground">Contato</a>
+          <Link to="/abrir-chamado" className="transition hover:text-foreground">Abrir Chamado</Link>
           <Link to="/login" className="transition hover:text-foreground">Área Técnica</Link>
         </nav>
+
         <a
           href={whatsappLink(`Olá ${BUSINESS.name}, preciso de um orçamento.`)}
           target="_blank"

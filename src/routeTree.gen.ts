@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as DashboardRouteImport } from './routes/dashboard'
+import { Route as AbrirChamadoRouteImport } from './routes/abrir-chamado'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard.index'
 import { Route as DashboardOrdensRouteImport } from './routes/dashboard.ordens'
@@ -25,6 +26,11 @@ const LoginRoute = LoginRouteImport.update({
 const DashboardRoute = DashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AbrirChamadoRoute = AbrirChamadoRouteImport.update({
+  id: '/abrir-chamado',
+  path: '/abrir-chamado',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -55,6 +61,7 @@ const DashboardClientesRoute = DashboardClientesRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/abrir-chamado': typeof AbrirChamadoRoute
   '/dashboard': typeof DashboardRouteWithChildren
   '/login': typeof LoginRoute
   '/dashboard/clientes': typeof DashboardClientesRoute
@@ -64,6 +71,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/abrir-chamado': typeof AbrirChamadoRoute
   '/login': typeof LoginRoute
   '/dashboard/clientes': typeof DashboardClientesRoute
   '/dashboard/documentos': typeof DashboardDocumentosRoute
@@ -73,6 +81,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/abrir-chamado': typeof AbrirChamadoRoute
   '/dashboard': typeof DashboardRouteWithChildren
   '/login': typeof LoginRoute
   '/dashboard/clientes': typeof DashboardClientesRoute
@@ -84,6 +93,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/abrir-chamado'
     | '/dashboard'
     | '/login'
     | '/dashboard/clientes'
@@ -93,6 +103,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/abrir-chamado'
     | '/login'
     | '/dashboard/clientes'
     | '/dashboard/documentos'
@@ -101,6 +112,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/abrir-chamado'
     | '/dashboard'
     | '/login'
     | '/dashboard/clientes'
@@ -111,6 +123,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AbrirChamadoRoute: typeof AbrirChamadoRoute
   DashboardRoute: typeof DashboardRouteWithChildren
   LoginRoute: typeof LoginRoute
 }
@@ -129,6 +142,13 @@ declare module '@tanstack/react-router' {
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof DashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/abrir-chamado': {
+      id: '/abrir-chamado'
+      path: '/abrir-chamado'
+      fullPath: '/abrir-chamado'
+      preLoaderRoute: typeof AbrirChamadoRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -189,6 +209,7 @@ const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AbrirChamadoRoute: AbrirChamadoRoute,
   DashboardRoute: DashboardRouteWithChildren,
   LoginRoute: LoginRoute,
 }
